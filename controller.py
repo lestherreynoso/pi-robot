@@ -1,55 +1,97 @@
-'''RES Controller'''
-import motionSensor as mS
-import motorControl as mC
-import light as ll
-import led as lM
-import ultrasonicSensor as uS
-import temperatureSensor as tS
-import servo as ss
-import time
-import RPi.GPIO as GPIO
-'''SETUP ALL THE PINS'''
-#ultrasonic
-trig = 11
-echo = 13
-#photoresistor
-pr = 7
-#gear motors
-left1 = 8
-left2 = 10
-right1 = 3
-right2 = 5
-#motion sensor
-motion = 15
-#LEDs
-brakes = 18
-headlights = 16
-servo = 12
+# '''RES Controller'''
+# import motion
+# import wheels
+# import light
+# import leds
+# import distance
+# import servo
+# import time
+# import RPi.GPIO as GPIO
+# '''SETUP ALL THE PINS'''
+# #ultrasonic
+# trig = 11
+# echo = 13
+# #photoresistor
+# pr = 7
+# #gear motors
+# left1 = 8
+# left2 = 10
+# right1 = 3
+# right2 = 5
+# #motion sensor
+# motioning = 15
+# #LEDs
+# brakes = 18
+# headlights = 16
+# serv = 12
 
-uS.uSensorSetup(trig, echo)
-ss.pinSetup(servo)
-ll.photoresistorSetup(pr)
-mC.motorPins(left1, left2, right1, right2)
-mS.PIRSetup(motion)
-lM.ledSetup(brakes, headlights)
+# distance.uSensorSetup(trig, echo)
+# servo.pinSetup(serv)
+# light.photoresistorSetup(pr)
+# wheels.motorPins(left1, left2, right1, right2)
+# motion.PIRSetup(motioning)
+# leds.ledSetup(brakes, headlights)
 
-print "testing brakes"
+#########################################################################
 
-#print mS.PIRReading()
+#########################################################################
 
-#print uS.distance()
-print "forward"
-ss.forward()
-time.sleep(1)
-print "left"
-ss.left()
-time.sleep(1)
-print "right"
-ss.right()
-time.sleep(5)
-print "forward again"
-ss.forward()
-time.sleep(2)
+
+def main():
+	print "Welcome to the RES 2.0 Controller"
+	response = raw_input("To test each component indivually type 'test': ")
+	if response == "test":
+		testing()
+	else:
+		print "you did not enter test"
+
+def testing():
+	components = {
+	"brakes" 	:brakes,
+	"headlights":headlights,
+	"wheels" 	:wheels,
+	"distance" 	:distance,
+	"motion" 	:motion
+}
+	print "What would you like to test?"
+	print "(brakes, headlights, wheels, distance, motion)"
+	component = input("enter one of the above: ")
+	components[component]()
+
+
+def brakes():
+	print "You are testing the brake lights"
+def headlights():
+	print "You are testing the headlights"
+def wheels():
+	print "You are testing the wheels"
+def distance():
+	print "You are testing distance getting"
+def motion():
+	print "You are testing the motion detection"
+
+
+main()
+
+
+
+
+
+
+
+
+# print "forward"
+# ss.forward()
+# time.sleep(1)
+# print "left"
+# ss.left()
+# time.sleep(1)
+# print "right"
+# ss.right()
+# time.sleep(5)
+# print "forward again"
+# ss.forward()
+# time.sleep(2)
 
 """
 '''turn light on'''
@@ -148,43 +190,3 @@ GPIO.cleanup()
 ######################################################################
 #
 ######################################################################
-"""
-try:
-	while true:
-		'''if light is low turn light on'''
-		if pM.lightLevel() == 'Low':
-			lightON()
-		'''if light is high turn light off'''
-		if pM.lightLevel() == 'High':
-			lightOFF()
-		'''if motion detected flash green and get distance'''
-		if mS.PIRReading():
-			print 'I found somebody ' + getDistance() + 'cm away'
-			flashGreen()
-			if pM.lightLevel() == 'Low':
-				lightON()
-		'''if obstruction within 60 cm report obstruction and distance'''
-		if getDistance() <= 60:
-			print 'Theres something in front of me'
-			print 'its kinda close: ' + getDistance() + 'cm' 
-		'''if temperature above 100F report danger'''
-		if tS.tempF() >= 100:
-			print 'Its pretty hot here!!'
-			print 'Fahrenhiet: ' + tS.tempF() + 'Celcius: ' + tS.tempC()
-		'''when car is stopped turn on rear lights'''
-		if (mC.LL == 0 & mC.LH == 0) || (mC.LL == 1 & mC.LH == 1) \
-		   (mC.RL == 0 & mC.RH == 0) || (mC.RL == 1 & mC.RH == 1):
-			time.sleep(0.1)
-			'''so it doesnt blink on when going from forward to turning'''
-			if (mC.LL == 0 & mC.LH == 0) || (mC.LL == 1 & mC.LH == 1) \
-		   	   (mC.RL == 0 & mC.RH == 0) || (mC.RL == 1 & mC.RH == 1):	
-				brakeLightsON()
-		else if (mC.LL == 1 & mC.LH == 0) || (mC.LL == 0 & mC.LH == 1) \
-		   	(mC.RL == 1 & mC.RH == 0) || (mC.RL == 0 & mC.RH == 1):
-				brakeLightsOFF()
-
-
-except KeyboardInterrupt:
-	print 'boy that was a lot of work'
-	GPIO.cleanup()
-"""
