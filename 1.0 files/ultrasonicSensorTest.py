@@ -2,8 +2,8 @@
 
 import ultrasonicSensor as uS, RPi.GPIO as io, time
 
-t = 15
-e = 7
+t = 10
+e = 8
 uS.uSensorSetup(t, e)
 
 try:

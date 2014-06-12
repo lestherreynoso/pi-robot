@@ -1,57 +1,42 @@
 '''RES Controller'''
 import motionSensor as mS
 import motorControl as mC
-import light as ll
-import led as lM
+import photocellManagement as pM
+import ledMan2 as lM
 import ultrasonicSensor as uS
 import temperatureSensor as tS
-import servo as ss
 import time
 import RPi.GPIO as GPIO
 '''SETUP ALL THE PINS'''
 #ultrasonic
-trig = 11
-echo = 13
+trig = 10
+echo = 8
 #photoresistor
-pr = 7
+pr = 5
 #gear motors
-left1 = 8
-left2 = 10
-right1 = 3
-right2 = 5
+left1 = 21
+left2 = 11
+right1 = 16
+right2 = 18
 #motion sensor
-motion = 15
+motion = 3
 #LEDs
-brakes = 18
-headlights = 16
-servo = 12
+red = 13 	#maybe
+green = 19	#maybe
+blue = 15	#maybe
+rearl = 23
+rearr = 26
 
 uS.uSensorSetup(trig, echo)
-ss.pinSetup(servo)
-ll.photoresistorSetup(pr)
+
+pM.photoresistorSetup(pr)
 mC.motorPins(left1, left2, right1, right2)
 mS.PIRSetup(motion)
-lM.ledSetup(brakes, headlights)
-
-print "testing brakes"
-
-#print mS.PIRReading()
-
-#print uS.distance()
-print "forward"
-ss.forward()
-time.sleep(1)
-print "left"
-ss.left()
-time.sleep(1)
-print "right"
-ss.right()
-time.sleep(5)
-print "forward again"
-ss.forward()
-time.sleep(2)
-
+lM.ledSetup(red, green, blue, rearl, rearr)
 """
+'''get distance'''
+def getDistance():
+	return uS.distance()
 '''turn light on'''
 def lightON():
 	lM.rgbActivate(lM.WHITE)
@@ -142,7 +127,7 @@ for i in range(5):
 
 '''
 
-ss.p.stop()
+
 GPIO.cleanup()
 
 ######################################################################

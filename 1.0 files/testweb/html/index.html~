@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content = "height = device-height, width = 420, user-scalable = no" /> 
+        <title>CRES GUI</title>
+        <script type="text/javascript" src="/webiopi.js"></script>
+        <script type="text/javascript">
+        webiopi().ready(function() {
+		var status, alerts, button;
+		status = $("#status");
+		alerts = $("#alerts");
+		
+		button = webiopi().createButton("visibility", "Visibility");
+                alerts.append(button);
+
+
+		button = webiopi().createButton("temp", "Temperature");
+                alerts.append(button);
+
+		button = webiopi().createButton("life", "Life?");
+                alerts.append(button);
+
+		button = webiopi().createButton("obsticle", "Obstacle?");
+                alerts.append(button);
+
+	});		
+
+	</script>
+
+	<style type="text/css">
+                button {
+                        display: block;
+                        margin: 5px 5px 5px 5px;
+                        width: 160px;
+                        height: 45px;
+                        font-size: 16pt;
+                        font-weight: bold;
+                        color: black;
+/*			background-color: blue;
+*/               }
+                
+                input[type="range"] {
+                        display: block;
+                        width: 160px;
+                        height: 45px;
+                }
+	
+		h1 {
+			text-align:center;
+		}
+		p.alertLabels {
+			text-align:left;		
+		}
+	</style>
+
+</head>
+<body>
+	<h1>RES BOT User Interface</h1>
+	<p class="alertLabels"><b>Visibility</b> 
+	<div id="alerts" ></div></p>
+</body>
+</html>
